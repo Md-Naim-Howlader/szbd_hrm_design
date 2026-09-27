@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Shopping Zone BD HRM</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    />
+    <!-- Flatpickr (date picker) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"
+    />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #101b2d;
+        --navy-2: #16233a;
+        --teal: #149c96;
+        --teal-dark: #0d7873;
+        --teal-light: #e6f6f5;
+        --amber: #f2a93b;
+        --coral: #ef6a5f;
+        --violet: #7c6cf0;
+        --ink: #1f2937;
+        --muted: #7b8698;
+        --bg: #eef2f6;
+        --line: #e6eaf0;
+        --radius: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        font-family: "Hind Siliguri", "Inter", sans-serif;
+        color: var(--ink);
+        overflow-x: hidden;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      .brand,
+      .stat-num,
+      .nav-section-title {
+        font-family: "Poppins", sans-serif;
+      }
+
+      /* ===== Layout shell ===== */
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* ===== Sidebar ===== */
+      .sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+        color: #c8d1e0;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1030;
+        transition: transform 0.25s ease;
+      }
+      .sidebar .brand {
+        padding: 26px 24px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.15rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        background: var(--teal);
+        box-shadow: 0 0 0 4px rgba(20, 156, 150, 0.25);
+      }
+      .nav-section-title {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #5c6a85;
+        padding: 18px 24px 6px;
+        font-weight: 600;
+      }
+      .side-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 24px;
+        color: #aab4c8;
+        text-decoration: none;
+        font-size: 0.92rem;
+        font-weight: 500;
+        border-left: 3px solid transparent;
+        transition: 0.15s;
+      }
+      .side-link i {
+        font-size: 1.05rem;
+        width: 20px;
+        text-align: center;
+      }
+      .side-link:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+      }
+      .side-link.active {
+        color: #fff;
+        background: rgba(20, 156, 150, 0.16);
+        border-left-color: var(--teal);
+      }
+      .side-badge {
+        margin-left: auto;
+        background: var(--coral);
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 1px 7px;
+        border-radius: 20px;
+      }
+      .sidebar-foot {
+        margin-top: auto;
+        padding: 18px 24px 22px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 0.78rem;
+        color: #5c6a85;
+      }
+
+      /* ===== Main area ===== */
+      .main {
+        margin-left: 260px;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ===== Topbar ===== */
+      .topbar {
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+      }
+      .search-box {
+        background: var(--bg);
+        border-radius: 10px;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        max-width: 360px;
+        color: var(--muted);
+      }
+      .search-box input {
+        border: none;
+        background: transparent;
+        outline: none;
+        width: 100%;
+        font-size: 0.88rem;
+      }
+      .top-icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        color: var(--ink);
+        border: none;
+      }
+      .top-icon-btn .ping {
+        position: absolute;
+        top: 6px;
+        right: 7px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--coral);
+        box-shadow: 0 0 0 2px #fff;
+      }
+      .profile-chip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-left: 14px;
+        border-left: 1px solid var(--line);
+      }
+      .profile-chip img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+      .profile-chip .role {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      .content {
+        padding: 26px 28px 60px;
+      }
+
+      /* ===== Page heading ===== */
+      .page-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+      .page-head h4 {
+        font-weight: 700;
+        margin: 0;
+      }
+      .page-head .sub {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+      .breadcrumb-mini {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .breadcrumb-mini a {
+        color: var(--teal-dark);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      /* ===== Hero clock-in card (signature element) ===== */
+      .clock-card {
+        background: linear-gradient(
+          120deg,
+          var(--navy) 0%,
+          var(--teal-dark) 130%
+        );
+        border-radius: var(--radius);
+        padding: 26px 28px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 22px;
+      }
+      .clock-card::after {
+        content: "";
+        position: absolute;
+        right: -60px;
+        top: -60px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1),
+          transparent 70%
+        );
+      }
+      .clock-card .greet {
+        font-size: 0.85rem;
+        color: #bcd8d6;
+        margin-bottom: 4px;
+      }
+      .clock-card h3 {
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .clock-card .date-line {
+        font-size: 0.85rem;
+        color: #cfe4e2;
+      }
+      .clock-time {
+        font-family: "Poppins", sans-serif;
+        font-size: 2.1rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .punch-btn {
+        background: #fff;
+        color: var(--teal-dark);
+        border: none;
+        font-weight: 700;
+        border-radius: 10px;
+        padding: 10px 22px;
+        font-size: 0.9rem;
+      }
+      .punch-out {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-size: 0.9rem;
+      }
+
+      /* ===== Stat cards ===== */
+      .stat-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 20px 20px;
+        border: 1px solid var(--line);
+        height: 100%;
+        transition: 0.15s;
+      }
+      .stat-card:hover {
+        box-shadow: 0 10px 24px rgba(16, 27, 45, 0.08);
+        transform: translateY(-2px);
+      }
+      .stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #fff;
+        margin-bottom: 14px;
+      }
+      .stat-num {
+        font-size: 1.6rem;
+        font-weight: 700;
+      }
+      .stat-label {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      .stat-trend {
+        font-size: 0.76rem;
+        font-weight: 600;
+      }
+
+      /* ===== Card generic ===== */
+      .panel {
+        background: #fff;
+        border-radius: var(--radius);
+        border: 1px solid var(--line);
+        padding: 22px;
+      }
+      .panel-title {
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 2px;
+      }
+      .panel-sub {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      /* ===== Attendance table ===== */
+      .table thead th {
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 12px;
+      }
+      .table td {
+        vertical-align: middle;
+        padding: 12px 8px;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.88rem;
+      }
+      .emp-mini {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .emp-mini img {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        object-fit: cover;
+      }
+      .emp-mini .role {
+        font-size: 0.76rem;
+        color: var(--muted);
+      }
+      .badge-status {
+        font-size: 0.74rem;
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 20px;
+      }
+      .st-present {
+        background: #e5f7ec;
+        color: #1e9e5b;
+      }
+      .st-late {
+        background: #fdf1de;
+        color: #c9820f;
+      }
+      .st-leave {
+        background: #fbe9e8;
+        color: #d9483c;
+      }
+
+      /* ===== Quick action / leave form ===== */
+      .form-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #4a5568;
+      }
+      .form-control,
+      .form-select {
+        border-color: var(--line);
+        font-size: 0.88rem;
+        padding: 10px 12px;
+        border-radius: 10px;
+      }
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(20, 156, 150, 0.15);
+      }
+      .btn-teal {
+        background: var(--teal);
+        border-color: var(--teal);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-size: 0.88rem;
+      }
+      .btn-teal:hover {
+        background: var(--teal-dark);
+        border-color: var(--teal-dark);
+        color: #fff;
+      }
+      .btn-outline-soft {
+        border: 1px solid var(--line);
+        color: var(--ink);
+        border-radius: 10px;
+        font-size: 0.88rem;
+        padding: 10px 16px;
+        background: #fff;
+      }
+
+      /* ===== Right rail: mini calendar & notice ===== */
+      .flatpickr-calendar {
+        box-shadow: none !important;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .notice-item {
+        display: flex;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px dashed var(--line);
+      }
+      .notice-item:last-child {
+        border-bottom: none;
+      }
+      .notice-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-top: 6px;
+        flex-shrink: 0;
+      }
+
+      /* ===== Donut legend ===== */
+      .legend-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-right: 6px;
+      }
+
+      .sidebar.collapsed {
+        transform: translateX(-260px);
+      }
+      .main {
+        transition: margin-left 0.25s ease;
+      }
+      .main.expanded {
+        margin-left: 0;
+      }
+
+      .toggle-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--bg);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink);
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+      .toggle-btn:hover {
+        background: var(--teal-light);
+        color: var(--teal-dark);
+      }
+
+      @media (max-width: 991.98px) {
+        .sidebar {
+          transform: translateX(-260px);
+        }
+        .sidebar.show {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+      }
+      /* ===== Footer ===== */
+      .site-footer {
+        margin-top: auto;
+        padding: 16px 28px;
+        border-top: 1px solid var(--line);
+        background: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+
+      /* ===== Filter bar (list pages) ===== */
+      .filter-bar {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px 18px;
+        margin-bottom: 18px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .filter-bar .form-select,
+      .filter-bar .form-control {
+        max-width: 200px;
+      }
+
+      /* ===== Department cards ===== */
+      .dept-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px;
+        height: 100%;
+      }
+      .dept-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        color: #fff;
+        margin-bottom: 14px;
+      }
+      .dept-card h6 {
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+      .dept-meta {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .avatar-stack {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+      }
+      .avatar-stack img {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+        margin-left: -8px;
+      }
+      .avatar-stack img:first-child {
+        margin-left: 0;
+      }
+      .avatar-stack .more {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--teal-light);
+        color: var(--teal-dark);
+        font-size: 0.68rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: -8px;
+        border: 2px solid #fff;
+      }
+
+      /* ===== Employee grid card ===== */
+      .emp-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px;
+        text-align: center;
+        height: 100%;
+      }
+      .emp-card img {
+        width: 66px;
+        height: 66px;
+        border-radius: 14px;
+        object-fit: cover;
+        margin-bottom: 10px;
+      }
+      .emp-card h6 {
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+      .emp-card .role {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .emp-card .id-tag {
+        font-size: 0.72rem;
+        color: var(--teal-dark);
+        background: var(--teal-light);
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 20px;
+        margin-top: 8px;
+      }
+
+      /* ===== Tabs ===== */
+      .nav-pills-soft .nav-link {
+        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 8px 16px;
+      }
+      .nav-pills-soft .nav-link.active {
+        background: var(--teal);
+        color: #fff;
+      }
+
+      /* ===== Roster grid ===== */
+      .roster-table td,
+      .roster-table th {
+        text-align: center;
+      }
+      .shift-chip {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 4px 8px;
+        border-radius: 8px;
+        display: inline-block;
+      }
+      .shift-morning {
+        background: #e6f6f5;
+        color: var(--teal-dark);
+      }
+      .shift-evening {
+        background: #f2e8fd;
+        color: #7c4fd0;
+      }
+      .shift-off {
+        background: #f1f2f4;
+        color: var(--muted);
+      }
+
+      /* ===== Approval action buttons ===== */
+      .btn-approve {
+        background: #e5f7ec;
+        color: #1e9e5b;
+        border: none;
+        border-radius: 8px;
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-reject {
+        background: #fbe9e8;
+        color: #d9483c;
+        border: none;
+        border-radius: 8px;
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ===== Progress bar ===== */
+      .kv-progress {
+        height: 6px;
+        border-radius: 6px;
+        background: var(--line);
+        overflow: hidden;
+      }
+      .kv-progress > div {
+        height: 100%;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <!-- ===================== SIDEBAR ===================== -->
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <span class="dot"></span> Shopping Zone
+          <span style="color: var(--teal)">BD</span>
+        </div>
+
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="side-link active"
+          ><i class="bi bi-grid-1x2-fill"></i> Dashboard</a
+        >
+        <a href="employees.html" class="side-link"
+          ><i class="bi bi-people-fill"></i> Employees</a
+        >
+        <a href="departments.html" class="side-link"
+          ><i class="bi bi-diagram-3-fill"></i> Departments</a
+        >
+
+        <div class="nav-section-title">Attendance</div>
+        <a href="attendance-report.html" class="side-link"
+          ><i class="bi bi-fingerprint"></i> Attendance Report</a
+        >
+        <a href="roster.html" class="side-link"
+          ><i class="bi bi-calendar2-week-fill"></i> Roster</a
+        >
+        <a href="leave.html" class="side-link"
+          ><i class="bi bi-airplane-fill"></i> Leave</a
+        >
+        <a href="pending-approvals.html" class="side-link"
+          ><i class="bi bi-check2-square"></i> Pending Approvals
+          <span class="side-badge">6</span></a
+        >
+
+        <div class="nav-section-title">Payroll</div>
+        <a href="salary-sheet.html" class="side-link"
+          ><i class="bi bi-cash-coin"></i> Salary Sheet</a
+        >
+        <a href="payslips.html" class="side-link"
+          ><i class="bi bi-receipt"></i> Payslips</a
+        >
+
+        <div class="nav-section-title">System</div>
+        <a href="settings.html" class="side-link"
+          ><i class="bi bi-gear-fill"></i> Settings</a
+        >
+
+        <div class="sidebar-foot">
+          Created with
+          <i
+            class="bi bi-lightning-charge-fill"
+            style="color: var(--amber)"
+          ></i>
+          Inovace Technologies
+        </div>
+      </aside>
+
+      <!-- ===================== MAIN ===================== -->
+      <div class="main" id="mainArea">
+        <!-- Topbar -->
+        <div class="topbar">
+          <button class="toggle-btn" id="menuBtn" title="Show / hide sidebar">
+            <i class="bi bi-list fs-4"></i>
+          </button>
+
+          <div class="search-box d-none d-md-flex">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              placeholder="Search — employee, ID, department..."
+            />
+          </div>
+
+          <div class="ms-auto d-flex align-items-center gap-2">
+            <button class="top-icon-btn"><i class="bi bi-building"></i></button>
+            <button class="top-icon-btn">
+              <i class="bi bi-bell"></i><span class="ping"></span>
+            </button>
+            <div class="profile-chip">
+              <div>
+                <div class="fw-semibold" style="font-size: 0.88rem">
+                  Md.Naim Howlader
+                </div>
+                <div class="role">Jr. Officer &middot; IT &amp; Electric</div>
+              </div>
+              <img src="https://i.pravatar.cc/80?img=13" alt="profile" />
+            </div>
+          </div>
+        </div>
+
+        <div class="content">
+          <!-- Page head -->
+          <div class="page-head">
+            <div>
+              <div class="breadcrumb-mini mb-1">
+                <a href="index.html">Home</a> / Dashboard
+              </div>
+              <h4>Welcome back, Naim &#128075;</h4>
+              <div class="sub">
+                Here's today's office overview &mdash; Wednesday, 29 July 2026
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-soft">
+                <i class="bi bi-download me-1"></i> Export Report
+              </button>
+              <button class="btn btn-teal">
+                <i class="bi bi-plus-lg me-1"></i> Add Employee
+              </button>
+            </div>
+          </div>
+
+          <!-- Hero clock-in -->
+          <div class="clock-card">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-7">
+                <div class="greet">TODAY'S ATTENDANCE</div>
+                <h3>Check in to the office</h3>
+                <div class="date-line" id="todayStr">
+                  Wednesday, 29 July 2026
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                  <button class="punch-btn">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Punch In
+                  </button>
+                  <button class="punch-out">
+                    <i class="bi bi-box-arrow-right me-1"></i> Punch Out
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-5 text-lg-end">
+                <div class="clock-time" id="liveClock">09:14:22 AM</div>
+                <div class="date-line">
+                  Last punch: 09:02 AM &mdash; On time
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stat cards -->
+          <div class="row g-3 mb-3">
+            <div class="col-6 col-lg-3">
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--teal)">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="stat-num">248</div>
+                <div class="stat-label">Total Employees</div>
+                <div class="stat-trend" style="color: #1e9e5b">
+                  <i class="bi bi-arrow-up-short"></i> 4 new this month
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--violet)">
+                  <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="stat-num">221</div>
+                <div class="stat-label">Present Today</div>
+                <div class="stat-trend" style="color: #1e9e5b">
+                  89% attendance
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--amber)">
+                  <i class="bi bi-airplane-fill"></i>
+                </div>
+                <div class="stat-num">14</div>
+                <div class="stat-label">On Leave</div>
+                <div class="stat-trend" style="color: var(--muted)">
+                  3 pending request
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--coral)">
+                  <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="stat-num">13</div>
+                <div class="stat-label">Late Arrivals</div>
+                <div class="stat-trend" style="color: var(--coral)">
+                  +2 vs yesterday
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main grid -->
+          <div class="row g-3">
+            <!-- Attendance table -->
+            <div class="col-xl-8">
+              <div class="panel mb-3">
+                <div
+                  class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2"
+                >
+                  <div>
+                    <div class="panel-title">Recent Attendance</div>
+                    <div class="panel-sub">
+                      Live attendance log &mdash; IT &amp; Electric department
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="attnDate"
+                    placeholder="Select date"
+                    style="max-width: 180px"
+                  />
+                </div>
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="emp-mini">
+                            <img src="https://i.pravatar.cc/80?img=13" />
+                            <div>
+                              <div class="fw-semibold">Md.Naim Howlader</div>
+                              <div class="role">SZBD-00070</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>IT &amp; Electric</td>
+                        <td>09:02 AM</td>
+                        <td>&mdash;</td>
+                        <td>
+                          <span class="badge-status st-present">Present</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="emp-mini">
+                            <img src="https://i.pravatar.cc/80?img=32" />
+                            <div>
+                              <div class="fw-semibold">Md. Mahomodul Hasan</div>
+                              <div class="role">SZBD-00012</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>Management</td>
+                        <td>09:31 AM</td>
+                        <td>&mdash;</td>
+                        <td><span class="badge-status st-late">Late</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="emp-mini">
+                            <img src="https://i.pravatar.cc/80?img=47" />
+                            <div>
+                              <div class="fw-semibold">Arif Hossan</div>
+                              <div class="role">SZBD-00003</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>HR</td>
+                        <td>08:55 AM</td>
+                        <td>06:04 PM</td>
+                        <td>
+                          <span class="badge-status st-present">Present</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="emp-mini">
+                            <img src="https://i.pravatar.cc/80?img=21" />
+                            <div>
+                              <div class="fw-semibold">Sumaiya Akter</div>
+                              <div class="role">SZBD-00055</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>Sales &amp; Marketing</td>
+                        <td>&mdash;</td>
+                        <td>&mdash;</td>
+                        <td>
+                          <span class="badge-status st-leave">On Leave</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="emp-mini">
+                            <img src="https://i.pravatar.cc/80?img=5" />
+                            <div>
+                              <div class="fw-semibold">Rakibul Islam</div>
+                              <div class="role">SZBD-00041</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>Warehouse</td>
+                        <td>08:47 AM</td>
+                        <td>&mdash;</td>
+                        <td>
+                          <span class="badge-status st-present">Present</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Apply for leave (date range picker) -->
+              <div class="panel">
+                <div class="panel-title mb-1">Apply for Leave</div>
+                <div class="panel-sub mb-3">
+                  Your request will be sent to your Line Manager for approval
+                </div>
+                <form class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label">Leave Type</label>
+                    <select class="form-select">
+                      <option>Casual Leave</option>
+                      <option>Sick Leave</option>
+                      <option>Earned Leave</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Start Date</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="startDate"
+                      placeholder="Select date"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">End Date</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="endDate"
+                      placeholder="Select date"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Reason</label>
+                    <textarea
+                      class="form-control"
+                      rows="2"
+                      placeholder="Briefly describe the reason..."
+                    ></textarea>
+                  </div>
+                  <div class="col-12 d-flex gap-2">
+                    <button type="button" class="btn btn-teal">
+                      <i class="bi bi-send-fill me-1"></i> Submit Request
+                    </button>
+                    <button type="button" class="btn btn-outline-soft">
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Right rail -->
+            <div class="col-xl-4">
+              <!-- Donut summary -->
+              <div class="panel mb-3">
+                <div class="panel-title mb-3">Attendance Summary</div>
+                <canvas id="attnDonut" height="190"></canvas>
+                <div
+                  class="d-flex justify-content-between mt-3"
+                  style="font-size: 0.8rem"
+                >
+                  <div>
+                    <span
+                      class="legend-dot"
+                      style="background: var(--teal)"
+                    ></span
+                    >Present 89%
+                  </div>
+                  <div>
+                    <span
+                      class="legend-dot"
+                      style="background: var(--amber)"
+                    ></span
+                    >Leave 6%
+                  </div>
+                  <div>
+                    <span
+                      class="legend-dot"
+                      style="background: var(--coral)"
+                    ></span
+                    >Late 5%
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mini calendar -->
+              <div class="panel mb-3">
+                <div class="panel-title mb-2">Calendar</div>
+                <div id="inlineCal"></div>
+              </div>
+
+              <!-- Notices -->
+              <div class="panel">
+                <div class="panel-title mb-2">Notices &amp; Requests</div>
+                <div class="notice-item">
+                  <span
+                    class="notice-dot"
+                    style="background: var(--coral)"
+                  ></span>
+                  <div>
+                    <div class="fw-semibold" style="font-size: 0.86rem">
+                      Sumaiya Akter &mdash; Leave Request
+                    </div>
+                    <div class="text-muted" style="font-size: 0.78rem">
+                      Sick leave &middot; 2 days &middot; Pending approval
+                    </div>
+                  </div>
+                </div>
+                <div class="notice-item">
+                  <span
+                    class="notice-dot"
+                    style="background: var(--amber)"
+                  ></span>
+                  <div>
+                    <div class="fw-semibold" style="font-size: 0.86rem">
+                      Late Approval &mdash; Rakibul Islam
+                    </div>
+                    <div class="text-muted" style="font-size: 0.78rem">
+                      Requested manual entry for 27 Jul
+                    </div>
+                  </div>
+                </div>
+                <div class="notice-item">
+                  <span
+                    class="notice-dot"
+                    style="background: var(--teal)"
+                  ></span>
+                  <div>
+                    <div class="fw-semibold" style="font-size: 0.86rem">
+                      Payroll processed
+                    </div>
+                    <div class="text-muted" style="font-size: 0.78rem">
+                      July salary sheet has been generated
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+          <div>&copy; 2026 Shopping Zone BD. All rights reserved.</div>
+          <div>
+            Powered By <span class="fw-semibold">Asmi IT Solution</span>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+
+    <script>
+      // Sidebar show/hide toggle (works on desktop + mobile)
+      document.getElementById("menuBtn").addEventListener("click", function () {
+        const sidebar = document.getElementById("sidebar");
+        const main = document.getElementById("mainArea");
+        if (window.innerWidth <= 991.98) {
+          sidebar.classList.toggle("show");
+        } else {
+          sidebar.classList.toggle("collapsed");
+          main.classList.toggle("expanded");
+        }
+      });
+
+      // Live clock (12-hour with AM/PM)
+      function tickClock() {
+        const el = document.getElementById("liveClock");
+        if (!el) return;
+        const now = new Date();
+        el.textContent = now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        });
+      }
+      tickClock();
+      setInterval(tickClock, 1000);
+
+      // Flatpickr date pickers
+      flatpickr("#attnDate", { dateFormat: "d M Y", defaultDate: "today" });
+      flatpickr("#startDate", { dateFormat: "d M Y" });
+      flatpickr("#endDate", { dateFormat: "d M Y" });
+      flatpickr("#inlineCal", { inline: true, dateFormat: "d M Y" });
+
+      // Donut chart
+      const ctx = document.getElementById("attnDonut");
+      new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Present", "On Leave", "Late"],
+          datasets: [
+            {
+              data: [89, 6, 5],
+              backgroundColor: ["#149c96", "#f2a93b", "#ef6a5f"],
+              borderWidth: 0,
+              cutout: "72%",
+            },
+          ],
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          responsive: true,
+          maintainAspectRatio: true,
+        },
+      });
+    </script>
+  </body>
+</html>
